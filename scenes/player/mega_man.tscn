@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c7cobmtjijuqu"]
+
+[ext_resource type="Script" path="res://scripts/player/mega_man.gd" id="1_4p5qv"]
+
+[node name="MegaMan" type="CharacterBody2D" groups=["Player"]]
+script = ExtResource("1_4p5qv")
