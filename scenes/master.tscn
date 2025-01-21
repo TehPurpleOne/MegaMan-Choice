@@ -56,7 +56,7 @@ _data = {
 "RESET": SubResource("Animation_4jv42")
 }
 
-[node name="Master" type="Node2D"]
+[node name="Master" type="Node2D" groups=["Master"]]
 script = ExtResource("1_vhc38")
 
 [node name="SceneManager" type="Control" parent="."]

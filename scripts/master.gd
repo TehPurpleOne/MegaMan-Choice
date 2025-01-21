@@ -1,5 +1,7 @@
 extends Node2D
 
+class_name Master
+
 var scenes : Array[String] = [ # This is a list of game scenes that will be loaded into the Scene Manager.
 	"res://scenes/game/demooptions.tscn",
 	"res://scenes/game/gameworld.tscn"
@@ -8,6 +10,8 @@ var scenes : Array[String] = [ # This is a list of game scenes that will be load
 var game_res: Vector2 = Vector2(384, 224) #Storing this for later use. May not use at all since there's no wallpaper support.
 var window_scale: int = 1 : set = resize_window
 var max_win_scale: int = 1
+
+var levelID: int = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

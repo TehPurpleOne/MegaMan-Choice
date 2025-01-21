@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://c8adr7vd1v2so"]
+
+[ext_resource type="Script" path="res://scripts/tools/spawn_point.gd" id="1_2r0rl"]
+
+[node name="SpawnPoint" type="Node2D" groups=["SpawnPoint"]]
+script = ExtResource("1_2r0rl")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -7.0
+offset_top = -10.0
+offset_right = 7.0
+offset_bottom = 10.0
+color = Color(0, 0.643137, 0.25098, 0.486275)

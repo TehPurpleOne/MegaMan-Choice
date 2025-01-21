@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+class_name Player
+
 @export var gravity: float = 900 # How fast the player is pulled back to the ground.
 @export var gravity_mod_default: float = 1 # Default gravity modifier. This is what gravity_mod will reset to.
 @export var jump_str: float = -310 # How fast the player leaves the ground during a jump.
@@ -23,10 +25,6 @@ var x_speed: float = 0 # Horizontal speed of the player.
 var x_speed_mod: float = 0 # Horizontal speed modifier. The higher the value, the faster the player can move outside it's base speed.
 var gravity_mod: float = 1 # Current gravity modifier. The higher the value, the faster the player falls.
 var beam_y_pos: float = 0 # Needed to trigger the player's collision box after teleporting into the stage.
-
-var current_state = ""
-var prev_state = ""
-var states: Array[String] = []
 
 func apply_gravity(delta):
 	# Pull the player downward.

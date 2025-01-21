@@ -1,0 +1,44 @@
+[gd_scene load_steps=6 format=3 uid="uid://d1iswjcanb04i"]
+
+[ext_resource type="Script" path="res://scripts/tools/section.gd" id="1_oq4dr"]
+[ext_resource type="PackedScene" uid="uid://b038bfdmwk3sf" path="res://scenes/tools/debug_rect.tscn" id="2_0t1v2"]
+[ext_resource type="Script" path="res://scripts/tools/debug_rect.gd" id="3_x4a4y"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lcwdu"]
+size = Vector2(1152, 224)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w8wnf"]
+size = Vector2(1152, 224)
+
+[node name="Section" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_oq4dr")
+
+[node name="Area2D" type="Area2D" parent="." groups=["Section"]]
+visible = false
+position = Vector2(192, 112)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_lcwdu")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+visible = false
+position = Vector2(192, 112)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("RectangleShape2D_w8wnf")
+disabled = true
+
+[node name="DebugRect" parent="." instance=ExtResource("2_0t1v2")]
+script = ExtResource("3_x4a4y")
+
+[connection signal="resized" from="." to="." method="_on_resized"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_player_entered"]

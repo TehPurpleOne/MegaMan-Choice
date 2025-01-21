@@ -1,5 +1,7 @@
 extends Node
 
+class_name InputManager
+
 var pressed: Dictionary = {};
 var held: Dictionary = {};
 var released: Dictionary = {};
@@ -7,7 +9,7 @@ var released: Dictionary = {};
 enum {INACTIVE, MENU, QUICKSWAP, PLAYER}
 var current_state = INACTIVE
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	# List of actions to monitor.
 	var actions: Array[String] = ["up", "down", "left", "right", "a", "b", "start", "select"]
 	
