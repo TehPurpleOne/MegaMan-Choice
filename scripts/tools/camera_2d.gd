@@ -159,6 +159,9 @@ func _set_active_section(section: Section) -> void:
 	active_section = section
 	active_section.active = true
 	
+	var gw: GameWorld = get_tree().get_first_node_in_group("GameWorld")
+	gw.active_section = active_section
+	
 	_update_limits()
 
 func _update_limits() -> void:

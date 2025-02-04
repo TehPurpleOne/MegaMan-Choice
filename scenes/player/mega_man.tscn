@@ -34,7 +34,6 @@ size = Vector2(14, 20)
 [sub_resource type="Animation" id="Animation_j8b2s"]
 resource_name = "APPEAR"
 length = 0.30001
-loop_mode = 1
 step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -104,7 +103,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_b4j7a"]
 resource_name = "LILSTEP"
-length = 0.166668
+length = 0.100002
 step = 0.0166667
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -183,10 +182,10 @@ _data = {
 }
 
 [node name="MegaMan" type="CharacterBody2D" groups=["Player"]]
-visible = false
 material = SubResource("ShaderMaterial_hff4n")
 collision_layer = 2
 script = ExtResource("1_4p5qv")
+max_jumps = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
@@ -211,3 +210,5 @@ shape = SubResource("RectangleShape2D_bsoam")
 libraries = {
 "": SubResource("AnimationLibrary_tb6cq")
 }
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_anim_done"]

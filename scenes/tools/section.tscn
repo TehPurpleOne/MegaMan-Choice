@@ -5,10 +5,10 @@
 [ext_resource type="Script" path="res://scripts/tools/debug_rect.gd" id="3_x4a4y"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lcwdu"]
-size = Vector2(1152, 224)
+size = Vector2(384, 224)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w8wnf"]
-size = Vector2(1152, 224)
+size = Vector2(384, 224)
 
 [node name="Section" type="Control"]
 layout_mode = 3

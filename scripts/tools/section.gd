@@ -10,6 +10,9 @@ var limit_bottom: int
 var limit_left: int
 var limit_right: int
 
+var x_clamp_low: float
+var x_clamp_high: float
+
 var transition_dir: Vector2 = Vector2.ZERO
 
 @export var seal_previous_section: bool = false;
@@ -19,6 +22,9 @@ func _ready() -> void:
 	limit_bottom = global_position.y + size.y
 	limit_left = global_position.x
 	limit_right = global_position.x + size.x
+	
+	x_clamp_low = limit_left + 6
+	x_clamp_high = limit_right - 6
 
 func _on_resized() -> void:
 	# This will resize all of the hitboxes and redraw the red border around the updated section.

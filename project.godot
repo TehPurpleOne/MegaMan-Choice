@@ -37,6 +37,7 @@ Player="Player object."
 SpawnPoint=""
 Master=""
 Section=""
+GameWorld=""
 
 [input]
 

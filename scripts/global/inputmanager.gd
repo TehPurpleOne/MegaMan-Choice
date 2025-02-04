@@ -6,8 +6,8 @@ var pressed: Dictionary = {};
 var held: Dictionary = {};
 var released: Dictionary = {};
 
-enum {INACTIVE, MENU, QUICKSWAP, PLAYER}
-var current_state = INACTIVE
+enum states {INACTIVE, MENU, QUICKSWAP, PLAYER}
+var current_state: states = states.INACTIVE
 
 func _physics_process(_delta: float) -> void:
 	# List of actions to monitor.
