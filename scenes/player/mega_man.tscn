@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://c7cobmtjijuqu"]
+[gd_scene load_steps=18 format=3 uid="uid://c7cobmtjijuqu"]
 
 [ext_resource type="Script" path="res://scripts/player/mega_man.gd" id="1_4p5qv"]
 [ext_resource type="Texture2D" uid="uid://bdh5bo67a0hue" path="res://assets/sprites/player/rock_palette.png" id="1_yti21"]
@@ -33,19 +33,46 @@ size = Vector2(14, 20)
 
 [sub_resource type="Animation" id="Animation_j8b2s"]
 resource_name = "APPEAR"
-length = 0.30001
-step = 0.1
-tracks/0/type = "value"
+length = 0.266673
+step = 0.0666667
+tracks/0/type = "method"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath(".")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.0666667, 0.133333, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"values": [{
+"args": [1],
+"method": &"update_base_frame"
+}, {
+"args": [0],
+"method": &"update_base_frame"
+}, {
+"args": [2],
+"method": &"update_base_frame"
+}, {
+"args": [0],
+"method": &"update_base_frame"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_e17gg"]
+resource_name = "BEAMIN"
+step = 0.0166667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [1, 0, 2]
+"values": [true]
 }
 
 [sub_resource type="Animation" id="Animation_sghr5"]
@@ -53,17 +80,22 @@ resource_name = "HURT"
 length = 0.100002
 loop_mode = 1
 step = 0.0166667
-tracks/0/type = "value"
+tracks/0/type = "method"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath(".")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.05),
 "transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [36, 37]
+"values": [{
+"args": [60],
+"method": &"update_base_frame"
+}, {
+"args": [61],
+"method": &"update_base_frame"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_42qov"]
@@ -71,51 +103,60 @@ resource_name = "IDLE"
 length = 2.0
 loop_mode = 1
 step = 0.0166667
-tracks/0/type = "value"
+tracks/0/type = "method"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath(".")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 1.83333),
 "transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [3, 4]
+"values": [{
+"args": [3],
+"method": &"update_base_frame"
+}, {
+"args": [4],
+"method": &"update_base_frame"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_txmn0"]
 resource_name = "JUMP"
 length = 0.001
 step = 0.0166667
-tracks/0/type = "value"
+tracks/0/type = "method"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath(".")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [18]
+"values": [{
+"args": [30],
+"method": &"update_base_frame"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_b4j7a"]
 resource_name = "LILSTEP"
 length = 0.100002
 step = 0.0166667
-tracks/0/type = "value"
+tracks/0/type = "method"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath(".")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [6]
+"values": [{
+"args": [12],
+"method": &"update_base_frame"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_1sfs6"]
@@ -124,54 +165,94 @@ step = 0.0166667
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("CollisionShape2D:disabled")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [0]
+"values": [false]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0],
+"method": &"update_base_frame"
+}]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
 }
 
 [sub_resource type="Animation" id="Animation_tskmw"]
 resource_name = "RUN"
-length = 0.500013
+length = 0.40001
 loop_mode = 1
-step = 0.125
-tracks/0/type = "value"
+step = 0.1
+tracks/0/type = "method"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath(".")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.125, 0.25, 0.375),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [9, 10, 11, 10]
+"values": [{
+"args": [21],
+"method": &"update_base_frame"
+}, {
+"args": [22],
+"method": &"update_base_frame"
+}, {
+"args": [23],
+"method": &"update_base_frame"
+}, {
+"args": [22],
+"method": &"update_base_frame"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_y4qv2"]
 resource_name = "SLIDE"
 length = 0.001
 step = 0.0166667
-tracks/0/type = "value"
+tracks/0/type = "method"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath(".")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [33]
+"values": [{
+"args": [57],
+"method": &"update_base_frame"
+}]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_tb6cq"]
 _data = {
 "APPEAR": SubResource("Animation_j8b2s"),
+"BEAMIN": SubResource("Animation_e17gg"),
 "HURT": SubResource("Animation_sghr5"),
 "IDLE": SubResource("Animation_42qov"),
 "JUMP": SubResource("Animation_txmn0"),
@@ -185,15 +266,17 @@ _data = {
 material = SubResource("ShaderMaterial_hff4n")
 collision_layer = 2
 script = ExtResource("1_4p5qv")
-max_jumps = 1
+sprite_sheet_frame_width = 3
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
 texture_filter = 1
 use_parent_material = true
 position = Vector2(0, -1)
 texture = ExtResource("3_sucbl")
 hframes = 3
-vframes = 14
+vframes = 22
+frame = 33
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_r4y34")

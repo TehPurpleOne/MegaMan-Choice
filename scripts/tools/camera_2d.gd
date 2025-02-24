@@ -115,9 +115,10 @@ func _transition(section: Section) -> void:
 	
 	# We're going to grab the player's hitbox size. This is just in case additional players are added
 	# later, so we don't have to go back and edit the code if the box is smaller or larger.
-	var box: CollisionShape2D = target.get_child(0)
+	var box: CollisionShape2D = target.get_child(1)
+	var box_shape: RectangleShape2D = box.shape
 	var player_movement: Vector2
-	var player_box_size: Vector2 = box.size / 2
+	var player_box_size: Vector2 = box_shape.size / 2
 	
 	if direction.x != 0:
 		var a: Vector2 = player_box_size.x * 2.5 * direction

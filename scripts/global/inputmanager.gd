@@ -33,15 +33,15 @@ func _physics_process(_delta: float) -> void:
 			pressed[action] = false
 			released[action] = false
 			
-func is_action_pressed(action: String) -> bool:
+func is_pressed(action: String) -> bool:
 	# Check if an action was pressed this frame.
 	return pressed.has(action) && pressed[action]
 
-func is_action_held(action: String) -> bool:
+func is_held(action: String) -> bool:
 	# Check if an action is currently being held.
 	return held.has(action) && held[action]
 
-func is_action_released(action: String) -> bool:
+func is_released(action: String) -> bool:
 	# Check if an action was released this frame.
 	return released.has(action) && released[action]
 

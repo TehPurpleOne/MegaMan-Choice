@@ -23,13 +23,16 @@ im="*res://scripts/global/inputmanager.gd"
 
 window/size/viewport_width=384
 window/size/viewport_height=224
-window/size/initial_position_type=0
 window/size/resizable=false
 window/stretch/mode="viewport"
 
 [dotnet]
 
 project/assembly_name="MegaMan Choice"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/script-ide/plugin.cfg")
 
 [global_group]
 

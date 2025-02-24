@@ -73,6 +73,7 @@ func _enter_state(new_state: states, old_state: states):
 		states.RUN:
 				$AnimationPlayer.play("RESET")
 				im.current_state = InputManager.states.PLAYER
+				$Camera2D._set_state(GameCamera.states.ACTIVE)
 
 func _exit_state(old_state: states, new_state: states):
 	# Exit an old state.
