@@ -2,6 +2,8 @@ extends Node
 
 class_name InputManager
 
+var actions: Array[StringName] = InputMap.get_actions()
+
 var pressed: Dictionary = {};
 var held: Dictionary = {};
 var released: Dictionary = {};
@@ -10,8 +12,7 @@ enum states {INACTIVE, MENU, QUICKSWAP, PLAYER}
 var current_state: states = states.INACTIVE
 
 func _physics_process(_delta: float) -> void:
-	# List of actions to monitor.
-	var actions: Array[String] = ["up", "down", "left", "right", "a", "b", "start", "select"]
+	if(current_state == states.INACTIVE): return
 	
 	# Iterate through all actions.
 	for action in actions:
@@ -52,3 +53,12 @@ func get_x_dir() -> float:
 func get_y_dir() -> float:
 	# Return the Y direction being pressed/held.
 	return int(Input.is_action_pressed("down")) - int(Input.is_action_pressed("up"))
+
+func set_state(new_state: states) -> void:
+	if(new_state != states.PLAYER && new_state != states.QUICKSWAP):
+		for action in actions:
+			pressed[action] = false
+			held[action] = false
+			released[action] = false
+			
+	current_state = new_state

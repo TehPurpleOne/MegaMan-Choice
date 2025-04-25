@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=3 uid="uid://d1iswjcanb04i"]
 
-[ext_resource type="Script" path="res://scripts/tools/section.gd" id="1_oq4dr"]
+[ext_resource type="Script" uid="uid://dqgldhgqvu1ut" path="res://scripts/tools/section.gd" id="1_oq4dr"]
 [ext_resource type="PackedScene" uid="uid://b038bfdmwk3sf" path="res://scenes/tools/debug_rect.tscn" id="2_0t1v2"]
-[ext_resource type="Script" path="res://scripts/tools/debug_rect.gd" id="3_x4a4y"]
+[ext_resource type="Script" uid="uid://duh0au26cgmwt" path="res://scripts/tools/debug_rect.gd" id="3_x4a4y"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lcwdu"]
 resource_local_to_scene = true

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://c7twjb5rau8rj"]
 
 [ext_resource type="FontFile" uid="uid://d3xc252egwpxh" path="res://assets/fonts/megaman-gameboy-a.ttf" id="1_5uauf"]
-[ext_resource type="Script" path="res://scripts/game/demooptions.gd" id="1_u0c6c"]
+[ext_resource type="Script" uid="uid://caensewv70t01" path="res://scripts/game/demooptions.gd" id="1_u0c6c"]
 
 [node name="DemoOptions" type="Node2D"]
 script = ExtResource("1_u0c6c")

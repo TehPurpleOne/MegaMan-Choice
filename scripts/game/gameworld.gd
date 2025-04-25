@@ -16,6 +16,8 @@ var im: InputManager
 var current_state: states = states.NULL
 var previous_state: states = states.NULL
 
+var levelID: int = 0
+
 var ticker: int = 0
 
 # This is the game world. It will house all of the stages within your game along with any objects that
@@ -63,7 +65,7 @@ func _enter_state(new_state: states, old_state: states):
 			# Place the player onto the selected spawn point.
 			var m = get_tree().get_nodes_in_group("Master")[0]
 			for sp in get_tree().get_nodes_in_group("SpawnPoint"):
-				if sp.spawnID == m.levelID:
+				if sp.spawnID == levelID:
 					$Graphic/MegaMan.global_position = sp.global_position
 					$Graphic/MegaMan.spawn_y_pos = sp.global_position.y
 		

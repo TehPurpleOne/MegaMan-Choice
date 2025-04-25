@@ -87,13 +87,13 @@ func input_manager() -> void:
 		dir_tap = Vector2(int(im.is_pressed("right")) - int(im.is_pressed("left")), int(im.is_pressed("down")) - int(im.is_pressed("up")))
 		dir_hold = Vector2(int(im.is_held("right")) - int(im.is_held("left")), int(im.is_held("down")) - int(im.is_held("up")))
 		
-		jump_tap = im.is_pressed("a")
-		jump_release = im.is_released("a")
+		jump_tap = im.is_pressed("jump")
+		jump_release = im.is_released("jump")
 		
-		fire_tap = im.is_pressed("b")
-		fire_release = im.is_released("b")
+		fire_tap = im.is_pressed("fire")
+		fire_release = im.is_released("fire")
 		
-		slide_tap = im.is_held("down") && im.is_pressed("a")
+		slide_tap = im.is_pressed("slide")
 	
 	if(im.current_state == InputManager.states.PLAYER || im.current_state == InputManager.states.QUICKSWAP):
 		fire_held = im.is_held("b") # Just in case a charge function is added.

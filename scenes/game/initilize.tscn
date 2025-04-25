@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://dphwims35ffj"]
+
+[ext_resource type="FontFile" uid="uid://006go1a360nu" path="res://assets/fonts/font.png" id="1_4ifrx"]
+[ext_resource type="Script" uid="uid://cqvrcrr0fyshg" path="res://scripts/game/initilize.gd" id="1_nywi6"]
+
+[node name="initilize" type="Node2D"]
+script = ExtResource("1_nywi6")
+
+[node name="Label" type="Label" parent="."]
+offset_right = 384.0
+offset_bottom = 224.0
+theme_override_fonts/font = ExtResource("1_4ifrx")
+theme_override_font_sizes/font_size = 8
+text = "Initializing... Please Wait."
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -1,10 +1,10 @@
 [gd_scene load_steps=16 format=4 uid="uid://dgh18wwd0ql41"]
 
-[ext_resource type="Script" path="res://scripts/game/gameworld.gd" id="1_gciij"]
+[ext_resource type="Script" uid="uid://dg23w7lrme8e4" path="res://scripts/game/gameworld.gd" id="1_gciij"]
 [ext_resource type="Texture2D" uid="uid://bna4l3t1iomt0" path="res://assets/tiles/rooms.png" id="1_qbwbu"]
 [ext_resource type="Texture2D" uid="uid://btxnoxiq4jgxi" path="res://assets/tiles/baseTiles.png" id="2_uq5o6"]
 [ext_resource type="PackedScene" uid="uid://c7cobmtjijuqu" path="res://scenes/player/mega_man.tscn" id="3_qadao"]
-[ext_resource type="Script" path="res://scripts/tools/camera_2d.gd" id="4_65g68"]
+[ext_resource type="Script" uid="uid://dujhx3sq43r74" path="res://scripts/tools/camera_2d.gd" id="4_65g68"]
 [ext_resource type="PackedScene" uid="uid://d1iswjcanb04i" path="res://scenes/tools/section.tscn" id="5_bpvne"]
 [ext_resource type="PackedScene" uid="uid://c8adr7vd1v2so" path="res://scenes/tools/spawn_point.tscn" id="6_aqnwn"]
 [ext_resource type="FontFile" uid="uid://006go1a360nu" path="res://assets/fonts/font.png" id="7_lyivo"]
@@ -65,8 +65,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_xcg0t"]
 _data = {
-"READY": SubResource("Animation_0kngd"),
-"RESET": SubResource("Animation_61353")
+&"READY": SubResource("Animation_0kngd"),
+&"RESET": SubResource("Animation_61353")
 }
 
 [node name="GameWorld" type="Node2D" groups=["GameWorld"]]

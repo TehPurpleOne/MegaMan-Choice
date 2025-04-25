@@ -70,6 +70,9 @@ func _transition(section: Section) -> void:
 	_set_state(states.STARTTRANSITION)
 	var m: Master = get_tree().get_nodes_in_group("Master")[0]
 	
+	target.set_process(false)
+	target.set_physics_process(false)
+	
 	# Add functions to despawn unneeded objects here, then spawn the objects needed for the next section.
 	
 	# A mask may be necessary to prevent players from seeing previous rooms if a shake function is made.
@@ -99,11 +102,12 @@ func _transition(section: Section) -> void:
 	global_position = old_cam_position
 	
 	var target_position: Vector2
+	var game_res = m.BASE_RES
 	
 	if direction.x != 0:
-		target_position = Vector2(transition_position + m.game_res.x / 2 * direction.x, global_position.y)
+		target_position = Vector2(transition_position + game_res.x / 2 * direction.x, global_position.y)
 	else:
-		target_position = Vector2(global_position.x, transition_position + m.game_res.y / 2 * direction.y)
+		target_position = Vector2(global_position.x, transition_position + game_res.y / 2 * direction.y)
 	
 	var tween: Tween = create_tween()
 	
@@ -162,6 +166,9 @@ func _set_active_section(section: Section) -> void:
 	
 	var gw: GameWorld = get_tree().get_first_node_in_group("GameWorld")
 	gw.active_section = active_section
+	
+	target.set_process(true)
+	target.set_physics_process(true)
 	
 	_update_limits()
 

@@ -1,6 +1,6 @@
 [gd_scene load_steps=18 format=3 uid="uid://c7cobmtjijuqu"]
 
-[ext_resource type="Script" path="res://scripts/player/mega_man.gd" id="1_4p5qv"]
+[ext_resource type="Script" uid="uid://ck30ykxq4h6yd" path="res://scripts/player/mega_man.gd" id="1_4p5qv"]
 [ext_resource type="Texture2D" uid="uid://bdh5bo67a0hue" path="res://assets/sprites/player/rock_palette.png" id="1_yti21"]
 [ext_resource type="Texture2D" uid="uid://ddj0h2wv4egjy" path="res://assets/sprites/player/rock_gray.png" id="3_sucbl"]
 
@@ -22,8 +22,8 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hff4n"]
 shader = SubResource("Shader_1ga8j")
-shader_parameter/index = 0
 shader_parameter/palette = ExtResource("1_yti21")
+shader_parameter/index = 0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r4y34"]
 size = Vector2(14, 20)
@@ -251,15 +251,15 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_tb6cq"]
 _data = {
-"APPEAR": SubResource("Animation_j8b2s"),
-"BEAMIN": SubResource("Animation_e17gg"),
-"HURT": SubResource("Animation_sghr5"),
-"IDLE": SubResource("Animation_42qov"),
-"JUMP": SubResource("Animation_txmn0"),
-"LILSTEP": SubResource("Animation_b4j7a"),
-"RESET": SubResource("Animation_1sfs6"),
-"RUN": SubResource("Animation_tskmw"),
-"SLIDE": SubResource("Animation_y4qv2")
+&"APPEAR": SubResource("Animation_j8b2s"),
+&"BEAMIN": SubResource("Animation_e17gg"),
+&"HURT": SubResource("Animation_sghr5"),
+&"IDLE": SubResource("Animation_42qov"),
+&"JUMP": SubResource("Animation_txmn0"),
+&"LILSTEP": SubResource("Animation_b4j7a"),
+&"RESET": SubResource("Animation_1sfs6"),
+&"RUN": SubResource("Animation_tskmw"),
+&"SLIDE": SubResource("Animation_y4qv2")
 }
 
 [node name="MegaMan" type="CharacterBody2D" groups=["Player"]]

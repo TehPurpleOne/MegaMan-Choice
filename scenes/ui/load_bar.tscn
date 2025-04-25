@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://cbm0v6dvwx51i"]
+
+[ext_resource type="Texture2D" uid="uid://d33m0l40tjdbc" path="res://assets/textures/loadbarmeter.png" id="1_hwmvy"]
+[ext_resource type="Script" uid="uid://dygacim75aan2" path="res://scripts/ui/load_bar.gd" id="1_u5q82"]
+
+[node name="load_bar" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_u5q82")
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -96.0
+offset_top = -24.0
+offset_right = 104.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 0
+value = 100.0
+texture_progress = ExtResource("1_hwmvy")

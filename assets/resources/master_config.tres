@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MasterConfig" load_steps=2 format=3 uid="uid://c7mheqx6now25"]
+
+[ext_resource type="Script" uid="uid://b3w5oieyph0nw" path="res://scripts/resources/master_config.gd" id="1_7ic4l"]
+
+[resource]
+script = ExtResource("1_7ic4l")
+input_map_default = {}
+input_map = {}
+fullscreen = false
+monitor = 0
+scale = 0
+music_volume = 0.0
+sound_volume = 0.0
+charge_fade = false
+mute_on_focus_loss = false
+metadata/_custom_type_script = "uid://b3w5oieyph0nw"
