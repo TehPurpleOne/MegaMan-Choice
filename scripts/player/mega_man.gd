@@ -3,6 +3,7 @@ extends "res://scripts/player/player.gd"
 class_name MegaMan
 
 func _ready() -> void:
+	m = get_node("/root/Master")
 	im = get_node("/root/im")
 	gw = get_tree().get_first_node_in_group("GameWorld")
 	p_sprite = get_node("Sprite2D")
@@ -46,6 +47,9 @@ func state_logic(delta: float) -> void:
 		if(y_vel.has(current_state)):
 			# Apply the standard gravity functions.
 			apply_y(delta)
+			
+			# This will only apply for air sliding.
+			if air_sliding: stop_y()
 			break;
 		else:
 			# Apply situational gravity as needed.
@@ -81,9 +85,23 @@ func state_logic(delta: float) -> void:
 	
 	move_and_slide()
 	
+	if fire_tap:
+		for i in range(8):
+			var degrees: float = 45.0 * i
+			var direction: Vector2 = Vector2(cos(deg_to_rad(degrees)), sin(deg_to_rad(degrees))).normalized()
+			var speed: float = 75
+			gw._spawn_effect("boom_loop", global_position, direction, speed * delta)
+			gw._spawn_effect("boom_loop", global_position, direction, (speed * 2) * delta)
+	
 	if(gw.active_section != null): global_position.x = clamp(global_position.x, gw.active_section.x_clamp_low, gw.active_section.x_clamp_high)
+	
+	# Ticker logic goes after the player has moved this frame.
+	if dash > 0: dash -= 1
+	if dash < 2 && current_state == states.SLIDE: dash = 2
 
 func get_transition(delta: float) -> states:
+	var slidebox_overlap: bool = $SlideBox.get_overlapping_bodies().size() > 0
+	
 	match current_state:
 		states.RESET:
 			if(gw.current_state == GameWorld.states.RUN):
@@ -96,7 +114,7 @@ func get_transition(delta: float) -> states:
 		states.IDLE:
 			if(dir_hold.y != 1 && jump_tap || !is_on_floor()): return states.JUMP
 			
-			#if(slide_tap): return states.SLIDE
+			if(slide_tap && !slidebox_overlap): return states.SLIDE
 			
 			if(dir_hold.x != 0): return states.LILSTEP
 		
@@ -107,15 +125,25 @@ func get_transition(delta: float) -> states:
 						return states.IDLE
 					_:
 						return states.RUN
+			
+			if slide_tap && gw.current_save.air_slide && air_slides_left > 0: return states.SLIDE
+						
 		states.LILSTEP:
 			if(dir_hold.y != 1 && jump_tap || !is_on_floor()): return states.JUMP
+			
+			if(slide_tap && !slidebox_overlap): return states.SLIDE
 			
 		states.RUN:
 			if(dir_hold.y != 1 && jump_tap || !is_on_floor()): return states.JUMP
 			
-			#if(slide_tap): return states.SLIDE
+			if(slide_tap && !slidebox_overlap): return states.SLIDE
 			
 			if(dir_hold.x == 0): return states.LILSTEP
+		
+		states.SLIDE:
+			if dash == 2 && !slidebox_overlap: return states.IDLE
+			
+			if !is_on_floor() && !air_sliding || is_on_wall() && !slidebox_overlap: return states.JUMP
 				
 	return states.NULL
 
@@ -142,7 +170,7 @@ func enter_state(new_state: states, old_state: states) -> void:
 	no_flip = false
 	
 	for state in no_flipping:
-		if(new_state == state):
+		if new_state == state:
 			no_flip = true
 			break
 	
@@ -150,26 +178,47 @@ func enter_state(new_state: states, old_state: states) -> void:
 	match new_state:
 		states.RESET:
 			jumps_left = max_jumps
+			air_slides_left = max_air_slides
 			
 		states.BEAMIN:
 			beam_y_pos = global_position.y
 			global_position.y = gw.active_section.limit_top - 12
-			$CollisionShape2D.disabled = true
+			$SolidBox.disabled = true
 		
 		states.APPEARA:
+			m._play_sound("beamin")
 			state_name = "APPEAR"
 			global_position.y = beam_y_pos
-			$CollisionShape2D.disabled = false
+			$SolidBox.disabled = false
 		
 		states.JUMP:
-			if(jump_tap): velocity.y = jump_str
-			pass
+			if jump_tap:
+				velocity.y = jump_str
+				jumps_left -= 1
+		
+		states.SLIDE:
+			if old_state == states.JUMP:
+				air_sliding = true
+				air_slides_left -= 1
+			x_speed_mod = dash_mod
+			dash = dash_dist
+			if old_state != states.JUMP: gw._spawn_effect("slide_dust", global_position + Vector2(0, 10), Vector2.ZERO, 0)
 	
 	if($AnimationPlayer.has_animation(state_name)):
 		$AnimationPlayer.play(state_name)
 
 func exit_state(old_state: states, new_state: states) -> void:
-	pass
+	match old_state:
+		states.JUMP:
+			if is_on_floor_only():
+				m._play_sound("land")
+				jumps_left = max_jumps
+				air_slides_left = max_air_slides
+			
+		states.SLIDE:
+			x_speed_mod = x_speed_mod_default
+			if dash > 2: dash = 2
+			air_sliding = false
 
 func set_state(new_state: states) -> void:
 	previous_state = current_state

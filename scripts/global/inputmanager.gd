@@ -4,9 +4,9 @@ class_name InputManager
 
 var actions: Array[StringName] = InputMap.get_actions()
 
-var pressed: Dictionary = {};
-var held: Dictionary = {};
-var released: Dictionary = {};
+var is_pressed: Dictionary = {};
+var is_held: Dictionary = {};
+var is_released: Dictionary = {};
 
 enum states {INACTIVE, MENU, QUICKSWAP, PLAYER}
 var current_state: states = states.INACTIVE
@@ -16,35 +16,35 @@ func _physics_process(_delta: float) -> void:
 	
 	# Iterate through all actions.
 	for action in actions:
-		var is_pressed = Input.is_action_pressed(action)
-		var was_pressed = held.has(action) && held[action]
+		var button_down = Input.is_action_pressed(action)
+		var button_release = is_held.has(action) && is_held[action]
 		
-		if is_pressed && !was_pressed:
+		if button_down && !button_release:
 			# Button was just pressed.
-			pressed[action] = true
-			held[action] = true
-			released[action] = false
-		elif !is_pressed && was_pressed:
+			is_pressed[action] = true
+			is_held[action] = true
+			is_released[action] = false
+		elif !button_down && button_release:
 			# Button was just released.
-			pressed[action] = false
-			held[action] = false
-			released[action] = true
+			is_pressed[action] = false
+			is_held[action] = false
+			is_released[action] = true
 		else:
 			# Reset pressed/released flags after one frame.
-			pressed[action] = false
-			released[action] = false
+			is_pressed[action] = false
+			is_released[action] = false
 			
-func is_pressed(action: String) -> bool:
+func pressed(action: String) -> bool:
 	# Check if an action was pressed this frame.
-	return pressed.has(action) && pressed[action]
+	return is_pressed.has(action) && is_pressed[action]
 
-func is_held(action: String) -> bool:
+func held(action: String) -> bool:
 	# Check if an action is currently being held.
-	return held.has(action) && held[action]
+	return is_held.has(action) && is_held[action]
 
-func is_released(action: String) -> bool:
+func released(action: String) -> bool:
 	# Check if an action was released this frame.
-	return released.has(action) && released[action]
+	return is_released.has(action) && is_released[action]
 
 func get_x_dir() -> float:
 	# Return the X direction being pressed/held.
@@ -57,8 +57,8 @@ func get_y_dir() -> float:
 func set_state(new_state: states) -> void:
 	if(new_state != states.PLAYER && new_state != states.QUICKSWAP):
 		for action in actions:
-			pressed[action] = false
-			held[action] = false
-			released[action] = false
+			is_pressed[action] = false
+			is_held[action] = false
+			is_released[action] = false
 			
 	current_state = new_state

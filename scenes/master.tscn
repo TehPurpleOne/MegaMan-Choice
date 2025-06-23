@@ -9,7 +9,7 @@ length = 0.3
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("SceneTransition:modulate")
+tracks/0/path = NodePath("SceneMasks/SceneTransition:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -25,7 +25,7 @@ length = 0.3
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("SceneTransition:modulate")
+tracks/0/path = NodePath("SceneMasks/SceneTransition:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -40,7 +40,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("SceneTransition:modulate")
+tracks/0/path = NodePath("SceneMasks/SceneTransition:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -60,18 +60,18 @@ _data = {
 [node name="Master" type="Node2D" groups=["Master"]]
 script = ExtResource("1_vhc38")
 
-[node name="SceneManager" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 384.0
-offset_bottom = 224.0
+[node name="SceneManager" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
 
-[node name="SceneTransition" type="ColorRect" parent="."]
+[node name="SceneMasks" type="CanvasLayer" parent="."]
+layer = 9
+
+[node name="SceneTransition" type="ColorRect" parent="SceneMasks"]
 offset_right = 384.0
 offset_bottom = 224.0
 color = Color(0, 0, 0, 1)
 
-[node name="load_bar" parent="." instance=ExtResource("2_jooxx")]
+[node name="load_bar" parent="SceneMasks" instance=ExtResource("2_jooxx")]
 visible = false
 offset_left = 192.0
 offset_top = 224.0

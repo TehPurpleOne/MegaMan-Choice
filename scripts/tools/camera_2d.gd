@@ -73,6 +73,8 @@ func _transition(section: Section) -> void:
 	target.set_process(false)
 	target.set_physics_process(false)
 	
+	section._toggle_graphics(true)
+	
 	# Add functions to despawn unneeded objects here, then spawn the objects needed for the next section.
 	
 	# A mask may be necessary to prevent players from seeing previous rooms if a shake function is made.

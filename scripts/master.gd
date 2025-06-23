@@ -26,7 +26,7 @@ var settings: MasterConfig
 var current_save: PlayerData
 var temp_save: PlayerData
 
-enum states {NULL, INIT, RUN, FADEOUT, FADEIN, LOAD, RELOCATE}
+enum states {NULL, INIT, RUN, FADEOUT, FADEIN, LOAD, LOADED, RELOCATE, RELOCATED}
 var current_state: states = states.NULL
 var previous_state: states = states.NULL
 
@@ -205,12 +205,12 @@ func _next_scene(path: String) -> void:
 		print("Fading out...")
 
 func _load_scene() -> void:
-	$load_bar.show()
+	$SceneMasks/load_bar.show()
 	
 	# Start thread loading
 	ResourceLoader.load_threaded_request(next_scene_path)
 	
-	if($load_bar == null):
+	if($SceneMasks/load_bar == null):
 		push_error("Error occurred. Load bar is not present.")
 		return
 	
@@ -232,18 +232,18 @@ func _load_scene() -> void:
 		
 		if(error == ResourceLoader.ThreadLoadStatus.THREAD_LOAD_IN_PROGRESS):
 			var percent: float = progress[0] * 100
-			$load_bar._set_value(percent)
+			$SceneMasks/load_bar._set_value(percent)
 		elif(error == ResourceLoader.ThreadLoadStatus.THREAD_LOAD_LOADED):
 			var resource: PackedScene = ResourceLoader.load_threaded_get(next_scene_path) as PackedScene
 			var new_scene: Node2D = resource.instantiate() as Node2D
 			print("New scene %s successfully loaded." % new_scene.name)
 			$SceneManager.add_child(new_scene)
-			$load_bar.hide()
-			_set_state(states.FADEIN)
+			$SceneMasks/load_bar.hide()
+			_set_state(states.LOADED)
 			return
 		else:
 			push_error("Error occurred while loading the scene.")
-			$load_bar.hide()
+			$SceneMasks/load_bar.hide()
 			return
 		
 		await get_tree().process_frame

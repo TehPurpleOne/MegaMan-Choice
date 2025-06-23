@@ -7,16 +7,18 @@ var active_section
 enum states {
 	NULL,
 	INITIALIZE,
+	INITDONE,
 	READY,
 	RUN
 }
 
+var m: Master
 var im: InputManager
 
 var current_state: states = states.NULL
 var previous_state: states = states.NULL
 
-var levelID: int = 0
+var current_save: PlayerData
 
 var ticker: int = 0
 
@@ -26,6 +28,7 @@ var ticker: int = 0
 
 func _ready() -> void:
 	im = get_node("/root/im")
+	m = get_node("/root/Master")
 	_set_state(states.INITIALIZE)
 
 func _physics_process(delta: float) -> void:
@@ -51,7 +54,10 @@ func _get_transition(delta: float) -> states:
 	# Each frame, specific triggers for the active state is checked. If true, it loads the next state. Simple.
 	match current_state:
 		states.INITIALIZE:
-			if $Graphic/MegaMan.global_position != Vector2.ZERO: return states.READY
+			if $Actors/MegaMan.global_position != Vector2.ZERO: return states.INITDONE
+		
+		states.INITDONE:
+			if m.current_state == Master.states.RUN: return states.READY
 		
 		states.READY:
 			if ticker == 180: return states.RUN
@@ -62,12 +68,19 @@ func _enter_state(new_state: states, old_state: states):
 	# Enter a new state.
 	match new_state:
 		states.INITIALIZE:
+			# Since the save system isn't in yet, create a test one for the time being.
+			current_save = PlayerData.new()
+			current_save.air_slide = true
+			
 			# Place the player onto the selected spawn point.
 			var m = get_tree().get_nodes_in_group("Master")[0]
 			for sp in get_tree().get_nodes_in_group("SpawnPoint"):
-				if sp.spawnID == levelID:
-					$Graphic/MegaMan.global_position = sp.global_position
-					$Graphic/MegaMan.spawn_y_pos = sp.global_position.y
+				if sp.spawnID == current_save.level_id:
+					$Actors/MegaMan.global_position = sp.global_position
+					$Actors/MegaMan.spawn_y_pos = sp.global_position.y
+		
+		states.INITDONE:
+			m._set_state(Master.states.FADEIN)
 		
 		states.READY:
 				$AnimationPlayer.play("READY")
@@ -93,3 +106,10 @@ func _set_state(new_state: states):
 	_exit_state(previous_state, current_state)
 	_enter_state(current_state, previous_state)
 	
+func _spawn_effect(name: String, position: Vector2, direction: Vector2, speed: float) -> void:
+	var get_object = load("res://scenes/effects/" + name + ".tscn")
+	var effect: OneShot = get_object.instantiate()
+	$Actors.add_child(effect)
+	effect.global_position = position
+	effect.direction = direction
+	effect.speed = speed

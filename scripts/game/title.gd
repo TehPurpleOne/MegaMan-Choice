@@ -4,7 +4,7 @@ class_name Title
 
 var m: Master
 
-enum states {NULL, INIT, SELECT, LOADNEXT, KILLGAME}
+enum states {NULL, INIT, INITDONE, SELECT, LOADNEXT, KILLGAME}
 var current_state: states = states.NULL
 var previous_state: states = states.NULL
 
@@ -27,7 +27,7 @@ func _physics_process(delta: float) -> void:
 func _state_logic(delta: float) -> void:
 	match current_state:
 		states.SELECT:
-			if(im.is_pressed("up") || im.is_pressed("down")):
+			if(im.pressed("up") || im.pressed("down")):
 				menu_pos = clamp(menu_pos + im.get_y_dir(), 0, max_menu_pos)
 				if(_skip_selection(menu_pos)): menu_pos = clamp(menu_pos + im.get_y_dir(), 0, max_menu_pos)
 				if(last_pos != menu_pos):
@@ -38,10 +38,13 @@ func _state_logic(delta: float) -> void:
 func _get_transition(delta: float) -> states:
 	match current_state:
 		states.INIT:
-			if(m.current_state == Master.states.RUN): return states.SELECT
+			if m.current_state == Master.states.LOADED: return states.INITDONE
+		
+		states.INITDONE:
+			if m.current_state == Master.states.RUN: return states.SELECT
 		
 		states.SELECT:
-			if(im.is_pressed("accept") || im.is_pressed("start")):
+			if(im.pressed("accept") || im.pressed("start")):
 				match _get_line(menu_pos):
 					"GAME START": return states.LOADNEXT
 					"EXIT": return states.KILLGAME
@@ -57,6 +60,9 @@ func _enter_state(new_state: states, old_state: states) -> void:
 			for line in split_lines:
 				lines.append(line)
 			max_menu_pos = lines.size() - 1
+		
+		states.INITDONE:
+			m._set_state(Master.states.FADEIN)
 		
 		states.LOADNEXT:
 			m._next_scene("res://scenes/game/gameworld.tscn")

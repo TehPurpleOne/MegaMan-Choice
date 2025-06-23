@@ -6,7 +6,8 @@ class_name Player
 @export var gravity_mod_default: float = 1 # Default gravity modifier. This is what gravity_mod will reset to.
 @export var jump_str: float = -310 # How fast the player leaves the ground during a jump.
 @export var max_y_vel: float = 500 # Maximum downward speed.
-@export var max_jumps: int = 0 #How many times a player can jump before needing to land.
+@export var max_jumps: int = 1 # How many times a player can jump before needing to land.
+@export var max_air_slides: int = 1 # How many times the player can air slide before touching the ground again.
 @export var run_speed: float = 82.5 #How fast the playr can run.
 @export var climb_speed_mod: float = 0.9 # How fast the player can climb.
 @export var x_speed_mod_default: float = 1 # Horizontal speed modifier default.
@@ -23,9 +24,11 @@ var ignore_jump_hold: bool = false # If true, the player cannot control the hiei
 @export var ice: bool = false # Ice flag. If true, the player will slide along the ground.
 var shoot: bool = false # Player is shooting the buster
 var throw: bool = false # Player has thrown a weapon or item
+var air_sliding: bool = false # Player is air sliding.
 var weapon_id: int = 0 # Current weapon ID. This will be used to determine which weapon to fire and what color the player is.
 var iframes: int = 0 # Invinsibility frames.
 var jumps_left: int = 0 # Jumps left before the player must touch the ground.
+var air_slides_left: int = 0
 var dash: int = 0 # Dash ticker. Handles when the player will exit a dash or slide.
 var shot_delay: int = 0 # Shot delay. How long the shooting sprites remain on screen.
 var base_frame: int = 0 # Base frame for the animation player.
@@ -76,6 +79,7 @@ enum secondary_state { # This will help swap the sprites between the normal pose
 	THROW = 2
 }
 
+var m: Master
 var im: InputManager
 var gw: GameWorld
 var p_sprite: Sprite2D
@@ -84,21 +88,21 @@ func input_manager() -> void:
 	if(im.current_state == InputManager.states.PLAYER):
 		# These will only respond to input whenever the input handler is in Player Mode.
 		# When in any other mode, devs can control the player as necessary through code.
-		dir_tap = Vector2(int(im.is_pressed("right")) - int(im.is_pressed("left")), int(im.is_pressed("down")) - int(im.is_pressed("up")))
-		dir_hold = Vector2(int(im.is_held("right")) - int(im.is_held("left")), int(im.is_held("down")) - int(im.is_held("up")))
+		dir_tap = Vector2(int(im.pressed("right")) - int(im.pressed("left")), int(im.pressed("down")) - int(im.pressed("up")))
+		dir_hold = Vector2(int(im.held("right")) - int(im.held("left")), int(im.held("down")) - int(im.held("up")))
 		
-		jump_tap = im.is_pressed("jump")
-		jump_release = im.is_released("jump")
+		jump_tap = im.pressed("jump")
+		jump_release = im.released("jump")
 		
-		fire_tap = im.is_pressed("fire")
-		fire_release = im.is_released("fire")
+		fire_tap = im.pressed("fire")
+		fire_release = im.released("fire")
 		
-		slide_tap = im.is_pressed("slide")
+		slide_tap = im.pressed("slide") && dash == 0
 	
 	if(im.current_state == InputManager.states.PLAYER || im.current_state == InputManager.states.QUICKSWAP):
-		fire_held = im.is_held("b") # Just in case a charge function is added.
+		fire_held = im.held("b") # Just in case a charge function is added.
 		
-		wpn_tap = im.is_pressed("select") # Allow the player to cycle through available weapons as a boss is doing its intro.
+		wpn_tap = im.pressed("select") # Allow the player to cycle through available weapons as a boss is doing its intro.
 
 func set_palette(id: int) -> void:
 	# This function will set the appropriate palette for the player.
@@ -169,7 +173,7 @@ func apply_x() -> void:
 		# No ice phsyics necessary.
 		x_speed = run_speed * dir_hold.x
 	
-	if(dash > 2 && is_on_floor()):
+	if(current_state == states.SLIDE && (is_on_floor() || air_sliding)):
 		# If the player is sliding/dashing, overwrite the above for this movement instead.
 		var dash_dir: float = 0
 		if(current_flip):

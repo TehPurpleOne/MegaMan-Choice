@@ -1,5 +1,5 @@
 @tool
-extends Control
+extends Node2D
 
 class_name Section
 
@@ -15,23 +15,39 @@ var x_clamp_high: float
 
 var transition_dir: Vector2 = Vector2.ZERO
 
+var rect_pos: Vector2i
+var tilemap_size: Vector2i = Vector2.ZERO
+
 @export var seal_previous_section: bool = false;
 
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		return
+		
 	limit_top = global_position.y
-	limit_bottom = global_position.y + size.y
+	limit_bottom = global_position.y + tilemap_size.y
 	limit_left = global_position.x
-	limit_right = global_position.x + size.x
+	limit_right = global_position.x + tilemap_size.x
 	
 	x_clamp_low = limit_left + 6
 	x_clamp_high = limit_right - 6
-
-func _on_resized() -> void:
-	# This will resize all of the hitboxes and redraw the red border around the updated section.
-	$Area2D.position = size / 2
-	$Area2D/CollisionShape2D.shape.size = size
-	$StaticBody2D.position = size / 2
-	$StaticBody2D/CollisionShape2D.shape.size = size
+	
+	_toggle_graphics(false)
+	
+func _on_rooms_changed() -> void:
+	if !is_inside_tree():
+		return
+		
+	var used_rect: Rect2 = $Rooms.get_used_rect()
+	tilemap_size = used_rect.size as Vector2i * $Rooms.tile_set.tile_size
+	rect_pos = used_rect.position as Vector2i * $Rooms.tile_set.tile_size
+	var center_x: float = (used_rect.position.x + used_rect.size.x / 2.0) * $Rooms.tile_set.tile_size.x
+	var center_y: float = (used_rect.position.y + used_rect.size.y / 2.0) * $Rooms.tile_set.tile_size.y
+	
+	$Trigger.position = Vector2(center_x, center_y)
+	$Trigger/Box.shape.size = tilemap_size
+	$Seal.position = Vector2(center_x, center_y)
+	$Seal/Box.shape.size = tilemap_size
 	
 	$DebugRect.queue_redraw()
 
@@ -46,7 +62,7 @@ func _on_player_entered(body: Node2D) -> void:
 	
 	print("Player has entered new section ",name," at position ",p_pos)
 	
-	var cam: GameCamera = get_tree().get_nodes_in_group("Camera")[0] #Grab the camera.
+	var cam: GameCamera = get_tree().get_nodes_in_group("GameCamera")[0] #Grab the camera.
 	
 	# Prevent the script from going on if the camera is inactive.
 	if cam.active_section != null && cam.current_state != cam.states.ACTIVE && cam.current_state != cam.states.SNAP:
@@ -56,6 +72,7 @@ func _on_player_entered(body: Node2D) -> void:
 	# Check to see if an active section has been set, or if the camera is in SNAP mode. Run functions accordingly.
 	if cam.active_section == null || cam.current_state == cam.states.SNAP:
 		print("No previous active section or camera is set to SNAP")
+		_toggle_graphics(true)
 		cam._set_active_section(self)
 		return
 	else:
@@ -110,3 +127,21 @@ func _set_seal(value: bool) -> void:
 	$StaticBody2D/CollisionShape2D.disabled = !value
 	
 	print("Previous area, ",name,", has been sealed!")
+	
+func _toggle_graphics(value: bool) -> void:
+	var hide_check: bool = !$Rooms.visible && !$Collision.visible && !$Graphic.visible
+	var tiles_check: bool = $Graphic/Tiles.tile_set != null || $Graphic/Tiles.get_used_cells().size() > 0
+	
+	if hide_check && value:
+		match tiles_check:
+			true:
+				$Graphic.show()
+			
+			false:
+				$Rooms.show()
+				$Collision.show()
+	
+	if !value:
+		$Rooms.hide()
+		$Collision.hide()
+		$Graphic.hide()
